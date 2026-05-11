@@ -1,0 +1,32 @@
+sources:
+  - name: demo_src
+    description: Данные из БД ивиаперелетов
+    database: dwh_flights
+    schema: demo_src
+    tables:
+      - name: boarding_passes
+        description: 'посадочные талоны'
+        columns:
+          - name: ticket_no
+            description: >
+              Номер билета
+          - name: flight_id
+            description: Идентификатор рейса
+          - name: boarding_no
+            description: Номер посадочного талона
+          - name: seat_no
+            description: Номер места
+      - name: flights
+        description: Рейсы
+        freshness: 
+          warn_after:
+            count: 600000
+            period: hour
+          error_after:
+            count: 10000
+            period: day
+        # changed to config in v1.10
+        loaded_at_field: actual_departure::timestamp
+      - name: ticket_flights
+        description: билеты на рейс
+      - name: tickets
