@@ -1,7 +1,7 @@
 {{
-      config(
-        materialized = 'table'
-        )   
+  config(
+    materialized = 'table',
+    )
 }}
 
 select
@@ -22,5 +22,3 @@ from
         left join {{ ref('stg_flights__boarding_passes') }} bp
         on tf.ticket_no=bp.ticket_no
         and tf.flight_id=bp.flight_id
-
-    
