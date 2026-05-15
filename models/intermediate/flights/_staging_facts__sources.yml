@@ -1,0 +1,11 @@
+sources:
+  - name: intermediate_src
+    description: Данные из БД ивиаперелетов
+    database: dwh_flights
+    schema: intermediate
+    tables:
+      - name: stg_flights__bookings
+      - name: stg_flights__flights
+      - name: stg_flights__ticket_flights
+      - name: stg_flights__boarding_passes
+      - name: stg_flights__tickets
