@@ -1,0 +1,38 @@
+models:
+  - name: fct_ticket_flights
+    description: факты билетов на рейсы
+    docs:
+      show: true
+      node_color: green
+    meta:
+      owner: 'vildan-kharisov@yandex.ru'
+
+    columns:
+      - name: ticket_no 
+        data_type: bpchar(13)
+
+      - name: flight_id
+        data_type: int4
+        constraints:
+          - type: not_null
+
+      - name: fare_conditions
+        data_type: varchar(10)
+
+      - name: amount
+        data_type: numeric(10, 2)
+        constraints:
+          - type: check
+            expression: 'amount >= 0'
+
+      - name: boarding_pass_exists
+        data_type: text
+
+      - name: boarding_no
+        data_type: int4
+
+      - name: seat_no
+        data_type: varchar(4)
+
+      - name: load_date
+        data_type: date

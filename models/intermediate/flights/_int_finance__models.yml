@@ -1,0 +1,30 @@
+models:
+  - name: fct_bookings
+    description: Факты бронирований
+    docs:
+      show: true
+      node_color: red
+    meta:
+      owner: 'vildan-kharisov@yandex.ru'
+
+    config:
+      contract: {enforced: true}
+    columns:
+      - name: book_ref
+        data_type: bpchar(6)
+        constraints:
+          - type: not_null
+      - name: book_date
+        data_type: timestamptz
+      - name: total_amount
+        data_type: numeric(10, 2)
+        constraints:
+          - type: check
+            expression: 'total_amount > 0'
+        tests:
+          - not_null
+        meta:
+          owner: finance
+        quote: false
+
+
