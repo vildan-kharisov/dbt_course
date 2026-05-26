@@ -32,14 +32,17 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   dbt_course_practice:
     intermediate:
-      +tags: 'intermediate'
-      
+
       flights:
         +meta:
           owner: 'dbt_project_yml@gmail.com'
           year_created: 2026
+        +tags: 
+          -'intermediate'
+          
     staging:
-      +tags: 'staging'
+      +tags: 
+        - 'staging'
 
     # Config indicated by + and applies to all files under models/example/
 
