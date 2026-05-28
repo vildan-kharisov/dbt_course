@@ -48,4 +48,4 @@ models:
 
 seeds:
   dbt_course_practice:
-    schema: seeds
+    +schema: seeds
