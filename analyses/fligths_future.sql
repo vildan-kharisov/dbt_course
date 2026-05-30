@@ -14,6 +14,6 @@ select
 scheduled_departure::date,
 count(*)
 from {{ ref('fct_flights') }}
-where scheduled_departure::date >='{{ run_started_at.strftime("%Y-%m-%d") }}'::date
+where scheduled_departure::date >='{{run_started_at}}'::date
 group by 
 scheduled_departure::date
