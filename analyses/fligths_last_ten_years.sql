@@ -1,0 +1,32 @@
+{# Задача 2(**): 
+
+Почитайте сколько всего полетов (количество строк в модели fct_fligths) было запланировано за предыдущие 10 лет, 
+начиная с текущей даты (scheduled_departure between [текущая дата] and [дата на 10 лет раньше текущей]).
+
+Создайте analyses под названием fligths_last_ten_years с расчетом. Опубликуйте его в github и приложите ссылку.
+
+Подсказки:
+
+- Текущую дату и время в jinja можно получить так: {{ run_started_at }}
+- Дату со временем можно преобразовать к строке с помощью фильтра string
+- Получить первые 10 символов строки в jinja можно с помощью фильтра truncate(10, True, "")
+
+Подсказка алгоритма:
+
+- Задайте переменную current_date, в которую поместите значение текущей даты в строковом формате;
+- Задайте переменную current_year, в которую поместите значение текущего года в формате int;
+- Задайте переменную prev_year, в которую поместите значение года, который был 10 лет назад, в формате int;
+- Задайте переменную prev_date, в которую поместите значение даты, которая была 10 лет назад, в строковом формате;
+
+Сделайте запрос с группировкой из модели fct_fligths, с подсчетом количества строк и фильтрацией по полю scheduled_departure, 
+чтобы оно было между текущей датой и датой 10 лет назад от текущей #}
+{# {% set current_date = run_started_at.strftime("%Y-%m-%d") %} #}
+{# {% set current_date = run_started_at|string|truncate(10, True, "")  %} #}
+{# {% set current_date = '{{ run_started_at|string|truncate(10, True, "") }}' %} #}
+{% set current_date = run_started_at.strftime("%Y-%m-%d") %}
+
+select 
+count(*) as count_flights
+from
+{{ ref('fct_flights') }}
+where scheduled_departure::date >=date(current_date)- interval '10 years'
