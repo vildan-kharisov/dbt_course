@@ -25,8 +25,29 @@
 {# {% set current_date = '{{ run_started_at|string|truncate(10, True, "") }}' %} #}
 {% set current_date = run_started_at.strftime("%Y-%m-%d") %}
 
-select 
-count(*) as count_flights
+select
+count(*) as {{adapter.quote('count_flights')}}
 from
 {{ ref('fct_flights') }}
 where scheduled_departure::date >=date(current_date)- interval '10 years'
+
+{% set fct_flights = api.Relation.create(
+        database="dwh_flights",
+        schema="intermediate",
+        identifier="fct_flights") %}
+
+
+{% set stg_flights__flights = api.Relation.create(
+        database="dwh_flights",
+        schema="intermediate",
+        identifier="stg_flights__flights") %}
+
+{% do adapter.expand_target_column_types(stg_flights__flights,fct_flights)-%}
+
+{% for column in adapter.get_columns_in_relation(stg_flights__flights) %}
+    {{'columns:' ~column}}
+{%- endfor %}
+
+{% for column in adapter.get_columns_in_relation(fct_flights) %}
+    {{'columns:' ~column}}
+{%- endfor %}
