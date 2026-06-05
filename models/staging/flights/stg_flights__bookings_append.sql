@@ -7,7 +7,7 @@
         )   
 }}
 select
-book_ref,
+{{bookref_to_bigint('book_ref')}} as book_ref,
 book_date,
 {{kopeck_to_ruble('total_amount')}} as total_amount
 
