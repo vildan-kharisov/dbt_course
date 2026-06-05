@@ -81,3 +81,33 @@ SELECT NULL
   
 {% endmacro %}
 
+{# 3 (уровень 2/3). Перечисление всех колонок из другой модели.
+
+Часто при создании кода модели нам требуется взять все поля из предыдущей модели. 
+Чтобы не перечислять список всех полей предыдущей модели, сделайте макрос, 
+который перечислит через запятую названия всех колонок из модели, название, которой будет передано в аргументе.
+
+Назовите макрос show_columns_relation и поместите в macros/utils.sql.
+
+В модели models/intermediate/fligths/fct_bookings.sql используйте вызов макроса show_columns_relation вместо перечисления всех колонок stg_flights__bookings. #}
+
+{% macro show_columns_relation(table_name) %}
+
+{% set relation_exists = api.Relation.create(
+        database=target.database,
+        schema=target.schema,
+        identifier=table_name) %}
+
+{% set column_list = []%}
+
+{% for column in adapter.get_columns_in_relation(relation_exists) %}
+    {% do column_list.append(column.column) %}  
+{%- endfor %}
+
+{% do log(column_list,true)%}
+
+{%- for column in column_list -%}
+  {{column}} {% if not loop.last %},{% endif%}
+{%- endfor -%}
+  
+{% endmacro %}
