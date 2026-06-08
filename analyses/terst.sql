@@ -1,12 +1,21 @@
-{% set fct_flights = api.Relation.create(
-        database="dwh_flights",
-        schema="intermediate",
-        identifier="fct_flights") %}
+{% if execute %}
+    {% set model_list = []%}
+    {% set seed_list = []%}
+    {% set snapshot_list = []%}
+  {% for node in graph.nodes.values() %}
+    {% if node.resource_type == 'model'%}
+        {% do model_list.append(node.name)%}
+    {% elif node.resource_type == 'seed'%}
+        {% do seed_list.append(node.name)%}
+    {% elif node.resource_type == 'snapshot'%}
+        {% do snapshot_list.append(node.name)%}
+    {% endif %}
+    
+  {% endfor %} 
 
-{% set column_list = []%}
-{% for column in adapter.get_columns_in_relation(fct_flights) %}
-{% do column_list.append(column.column) %}
-    {# {{'columns:' ~column.column}} #}
-    {% do log(column.column,true)%}
-{%- endfor %}
-{{'columns:' ~column_list}}
+    {% do log('Всего в проекте:',True)%}
+    {% do log('- '~ model_list|length ~ ' моделей',True)%}
+    {% do log('- '~ seed_list|length ~ ' seed',True)%}
+    {% do log('- '~ snapshot_list|length ~ ' snapshot',True)%}
+
+{% endif %}
