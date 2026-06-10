@@ -17,3 +17,14 @@ select
     CURRENT_DATE load_date,
     {{concat_columns(['flight_id','flight_no'])}} as flight_info
 from {{ ref('stg_flights__flights') }}
+
+
+
+{# 3 (2/3). С помощью макроса get_column_values получить все уникальные значения статуса полетов (поле status модели fct_fligths). 
+Вывести их в логи, при обновлении модели fct_fligths. #}
+
+{# {% set get_column = dbt_utils.get_column_values(table=ref('fct_fligths'), column='status') %}
+
+{% for col in get_column %}
+  {% do log(col,True) %}
+{% endfor %} #}
