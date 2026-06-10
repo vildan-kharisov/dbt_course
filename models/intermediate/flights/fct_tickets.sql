@@ -11,3 +11,9 @@ select
   contact_data
 from {{ ref('stg_flights__tickets') }}
 where passenger_id not in(select passenger_id from {{ ref('job_passengers') }} )
+
+{% set get_column = dbt_utils.get_column_values(table=ref('fct_tickets'), column='book_ref') %}
+
+{% for col in get_column %}
+  --{{col}}
+{% endfor %}
