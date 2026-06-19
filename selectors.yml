@@ -1,0 +1,5 @@
+selectors:
+  - name: failed_tests_with_their_models
+    definition: '1+result:failed'
+  - name: update_incremental_models
+    definition: 'config.materialized:incremental'
