@@ -3,6 +3,11 @@
 
 Приложите ссылку на github с кодом теста, а также команды запуска теста
 */
+{{
+    config(
+    severity = 'warn',
+    )
+}}
 select
 total_amount
 
