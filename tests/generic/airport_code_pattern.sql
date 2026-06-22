@@ -4,4 +4,9 @@
 Добавьте эту проверку на поле airport_code. Тест назовите airport_code_pattern. 
 В случае не удачи, данный тест должен возвращать предупреждение вместо ошибки; */
 {% test airport_code_pattern(model, column_name)%}
+SELECT 
+{{column_name}}
+FROM 
+{{model}}
+where NOT {{ column_name }} ~ '^[A-Z]{3}$'
 {% endtest %}
