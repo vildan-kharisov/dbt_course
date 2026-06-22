@@ -11,7 +11,7 @@
             %}
             {% do adapter.drop_relation(backup_relation) %}
             {% do adapter.rename_relation(this, backup_relation) %}
-        '
+        ' 
 
         )   
 }}

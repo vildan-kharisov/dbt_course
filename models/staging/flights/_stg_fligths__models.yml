@@ -25,11 +25,12 @@ models:
           - not_null
           - accepted_values:
               values: ['Business', 'Comfort', 'Economy']
-  - name: stg_flights__airports
+  - name: stg_flights__airports_dbt_backup_new
     columns:
       - name: airport_code
         data_tests:
           - not_null
+          - airport_code_pattern
           - unique
       - name: airport_name
       - name: city
