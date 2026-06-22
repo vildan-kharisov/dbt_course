@@ -25,3 +25,16 @@ models:
           - not_null
           - accepted_values:
               values: ['Business', 'Comfort', 'Economy']
+  - name: stg_flights__airports
+    columns:
+      - name: airport_code
+        data_tests:
+          - not_null
+          - unique
+      - name: airport_name
+      - name: city
+      - name: coordinates
+      - name: timezone
+# Покройте generic тестами модель stg_flights__airports:
+# (1/3) Проверьте, что поле airport_code не содержит пустых значений (null) и не содержит дубликатов;
+ 
