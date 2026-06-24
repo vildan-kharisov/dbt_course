@@ -1,0 +1,25 @@
+
+# Напишите юнит тесты, которые проверят логику расчета actual_duration_flight:
+# а. Проверьте, что если actual_departure и actual_arrival заданы и в actual_arrival значение больше, чем в actual_departure, то actual_duration_flight равен их разности.
+# б. Проверьте, что если actual_departure задан, а actual_arrival не задан, то actual_duration_flight содержит значение INTERVAL '0 seconds'.
+
+unit_tests:
+  - name: actual_arrival_more_than_actual_departure
+    description: Если actual_departure и actual_arrival заданы и в actual_arrival значение больше, чем в actual_departure, то actual_duration_flight равен их разности.
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows: {actual_departure: 2017-09-01T09:25:00+00:00, actual_arrival: 2017-09-01T09:27:00+00:00}
+    excpect: 
+      rows: {actual_departure: 2017-09-01T09:25:00+00:00, actual_arrival: 2017-09-01T09:27:00+00:00, actual_duration_flight: 00:02:00}
+
+  - name: actual_arrival_is_null
+    description: если actual_departure задан, а actual_arrival не задан, то actual_duration_flight содержит значение INTERVAL '0 seconds'.
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows: {actual_departure: 2017-09-01T09:25:00+00:00, actual_arrival: }
+    excpect: 
+      rows: {actual_departure: 2017-09-01T09:25:00+00:00, actual_arrival: , actual_duration_flight: 0:00:00}
+
+

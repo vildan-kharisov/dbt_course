@@ -1,0 +1,37 @@
+unit_tests:
+  - name: test_fact_departure_after_sheduled_departure
+    descriptin: Время фактичесого времени вылета позже запланированного. В поле задержки должно быть положительное число
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: 2017-09-01T09:27:00+00:00}
+    excpect: 
+      rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: 2017-09-01T09:27:00+00:00, fligth_departure_delay: 0:02:00}
+
+  - name: test_fact_departure_equal_sheduled_departure
+    descriptin: Время фактичесого времени вылета равно запланированному. В поле задержки должно быть ноль
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: 2017-09-01T09:25:00+00:00}
+    excpect: 
+      rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: 2017-09-01T09:25:00+00:00, fligth_departure_delay: 0:00:00}
+
+  - name: test_fact_departure_less_sheduled_departure
+    descriptin: Время фактичесого времени вылета раньше запланированного. В поле задержки должно быть ноль
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: 2017-09-01T09:23:00+00:00}
+    excpect: 
+      rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: 2017-09-01T09:23:00+00:00, fligth_departure_delay: 0:00:00}
+
+  - name: test_fact_departure_is_null
+    descriptin: Время фактичесого времени вылета отсутсвует. В поле задержки должно быть ноль
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: }
+    excpect: 
+      rows: {scheduled_departure: 2017-09-01T09:25:00+00:00, actual_departure: , fligth_departure_delay: 0:00:00}
+
