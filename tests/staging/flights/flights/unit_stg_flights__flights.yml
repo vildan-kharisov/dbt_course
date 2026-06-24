@@ -1,0 +1,57 @@
+# 2. Напишите юнит тесты для проверки алгоритма инкрементального обновления модели stg_flights__flights:
+
+# а. В stg_flights__flights уже есть строка с перелетом с запланированной датой вылета 01.01.2025. 
+# И приходит новая строка с другим перелетом с запланированной датой вылета 15.12.2024. 
+# Новая строка с перелетом должна быть добавлена в модели при инкрементальном обновлении.
+
+# б. В stg_flights__flights уже есть строка с перелетом с запланированной датой вылета 01.01.2025. 
+# И приходит новая строка с другим перелетом с запланированной датой вылета 01.09.2024. 
+# Новая строка с перелетом не должна быть добавлена в модели при инкрементальном обновлении.
+
+# в. В stg_flights__flights уже есть строка с перелетом с запланированной датой вылета 01.01.2025. 
+# И приходит новая строка с этим же перелетом (с тем же значением flight_id) с другим значением поля status. 
+# Новая строка с обновленным статусом должна попасть в результат.
+
+unit_tests:
+  - name: add_new_one_row
+    description: Новая строка с перелетом должна быть добавлена в модели при инкрементальном обновлении
+    model: stg_flights__flights
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: source('demo_src', 'flights') 
+        rows: {scheduled_arrival: 2025-01-01}
+      - input: this
+        rows: {scheduled_arrival: 2024-12-15}     
+    excpect:
+      rows: {scheduled_arrival: 2025-01-01}
+
+  - name: no_one_new_row
+    description: Новая строка с перелетом не должна быть добавлена в модели при инкрементальном обновлении
+    model: stg_flights__flights
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: source('demo_src', 'flights') 
+        rows: {scheduled_arrival: 2025-01-01}
+      - input: this
+        rows: {scheduled_arrival: 2024-09-01}
+    excpect:
+      rows: []
+
+
+  - name: update_status
+    description: Новая строка с обновленным статусом должна попасть в результат
+    model: stg_flights__flights
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: source('demo_src', 'flights') 
+        rows: {flight_id: 182,scheduled_arrival: 2025-01-01, status: Arrived}
+      - input: this
+        rows: {flight_id: 182,scheduled_arrival: 2025-01-01, status: Scheduled}
+    excpect:
+      rows: {flight_id: 182,scheduled_arrival: 2025-01-01, status: Arrived}
